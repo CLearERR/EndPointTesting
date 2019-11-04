@@ -1,6 +1,8 @@
 import pytest
 import time
 import os
+import logging
+import datetime
 
 def pytest_configure(config):
     config.addinivalue_line("markers", "headers")
@@ -8,8 +10,9 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "status")
     config.addinivalue_line("markers", "positive")
     config.addinivalue_line("markers", "negative")
-    config.addinivalue_line("markers", "get")
-    config.addinivalue_line("markers", "post")
+    config.addinivalue_line("markers", "explicit")
+    config.addinivalue_line("markers", "timeout")
+
 
 
 def pytest_addoption(parser):
@@ -18,17 +21,10 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="session")
 def ini(request):
     return os.path.join(os.path.dirname(__file__), request.config.getoption('--ini'))
-'''
+
 @pytest.fixture(scope="function", autouse=True)
 def set_log(caplog):
     caplog.set_level(logging.INFO)
-    logging.info("start logging")
+    logging.info("==========start logging==========")
     yield
-    logging.info("end logging")
-'''
-
-@pytest.fixture(scope="function", autouse=True)
-def set_time():
-    time.sleep(1)
-    yield
-    time.sleep(1)
+    logging.info("==========end logging==========")
